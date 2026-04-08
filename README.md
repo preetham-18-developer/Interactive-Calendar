@@ -1,73 +1,50 @@
-# React + TypeScript + Vite
+# Premium Interactive Calendar
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A flagship-grade, production-ready interactive calendar built exclusively with **React**. This project features a sophisticated user interface, smooth cinematic transitions, and a robust event management system designed for a premium user experience.
 
-Currently, two official plugins are available:
+## ✨ Key Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+*   **Premium React Architecture**: Built with a modular, component-based structure optimized for performance and scalability.
+*   **User Isolation**: Integrated authentication flow with secure multi-tenant data scoping (Events are isolated per user).
+*   **Refined Red UI Theme**: A modern, high-end design system using a deep red accent palette, glassmorphism containers, and professional typography.
+*   **Cinematic Animations**: 
+    *   Lamp-based dramatic introduction.
+    *   Flipping page transitions for month navigation.
+    *   Micro-interactions for buttons, focus states, and input fields.
+*   **Seasonal Backgrounds**: Context-aware atmospheric effects (Snow in Winter, Rain in Monsoon, etc.) with mobile performance throttling.
+*   **Event Management**: Full CRUD capabilities for managing professional and personal schedules.
+*   **Guest Mode**: An accessible entry point for users to preview the premium experience without immediate signup.
 
-## React Compiler
+## 🛠️ Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+*   **Core**: React
+*   **Styling**: Tailwind CSS & Vanilla CSS
+*   **Animations**: Framer Motion
+*   **Icons**: Lucide React
+*   **State Management**: React Life-cycle Hooks (useCallback, useMemo, useEffect)
 
-## Expanding the ESLint configuration
+## 🚀 Getting Started
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+1.  **Clone the project**:
+    ```bash
+    git clone https://github.com/preetham-18-developer/Interactive-Calendar.git
+    ```
+2.  **Install dependencies**:
+    ```bash
+    npm install
+    ```
+3.  **Run Development Server**:
+    ```bash
+    npm run dev
+    ```
+4.  **Build for Production**:
+    ```bash
+    npm run build
+    ```
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 🔐 Data Security
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+This application uses rigorous data isolation. Each user's events are stored and retrieved using unique identifiers in `localStorage`, preparing the architecture for seamless future integration with backend databases like Supabase or Firebase.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
+Built with passion for premium user experiences.
