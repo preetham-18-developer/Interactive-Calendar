@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, Moon, Sun, Radio, LogOut } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Moon, Sun, Radio, LogOut, Activity } from 'lucide-react';
 import React, { useMemo } from 'react';
 
 interface CalendarHeaderProps {
@@ -14,6 +14,8 @@ interface CalendarHeaderProps {
   onToggleTheme: () => void;
   onOpenRadar: () => void;
   onLogout: () => void;
+  isMissionMode: boolean;
+  onMissionModeChange: (v: boolean) => void;
 }
 
 export const CalendarHeader = React.memo(function CalendarHeader({
@@ -29,6 +31,8 @@ export const CalendarHeader = React.memo(function CalendarHeader({
   onToggleTheme,
   onOpenRadar,
   onLogout,
+  isMissionMode,
+  onMissionModeChange,
 }: CalendarHeaderProps) {
   const years = useMemo(() => {
     const currentYear = new Date().getFullYear();
@@ -43,6 +47,10 @@ export const CalendarHeader = React.memo(function CalendarHeader({
     <div className="calendar-header">
       {/* Left Toolbar & Title */}
       <div className="calendar-header__left">
+        <div className="app-logo">
+          <Activity size={20} className="text-red-600 animate-pulse" />
+          <span className="app-logo__text">TimeForge</span>
+        </div>
         <div className="app-toolbar mr-4 pr-3 border-r border-[var(--color-border)]">
           <button
             className="icon-btn"
@@ -98,6 +106,24 @@ export const CalendarHeader = React.memo(function CalendarHeader({
             id="view-list-btn"
           >
             List
+          </button>
+        </div>
+
+        {/* Mission Mode toggle */}
+        <div className="view-selector">
+          <button
+            className={`view-selector__btn ${!isMissionMode ? 'view-selector__btn--active' : ''}`}
+            onClick={() => onMissionModeChange(false)}
+            id="normal-mode-btn"
+          >
+            Normal
+          </button>
+          <button
+            className={`view-selector__btn ${isMissionMode ? 'view-selector__btn--active' : ''} mission-mode-toggle-btn`}
+            onClick={() => onMissionModeChange(true)}
+            id="mission-mode-btn"
+          >
+             🎯 Mission
           </button>
         </div>
 

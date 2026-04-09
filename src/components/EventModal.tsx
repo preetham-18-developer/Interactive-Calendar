@@ -9,6 +9,7 @@ interface EventModalProps {
   onClose: () => void;
   onSave: (event: CalendarEvent | CalendarEvent[]) => void;
   onDelete: (id: string) => void;
+  isMissionMode?: boolean;
 }
 
 const EVENT_TYPES: EventType[] = [
@@ -18,19 +19,21 @@ const EVENT_TYPES: EventType[] = [
   'Festival',
   'Holiday',
 ];
-
 export function EventModal({
   dateStr,
   existingEvents,
   onClose,
   onSave,
   onDelete,
+  isMissionMode,
 }: EventModalProps) {
   const existingEvent = existingEvents.find((e) => e.dateStr === dateStr);
 
   const [title, setTitle] = useState(existingEvent?.title || '');
-  const [type, setType] = useState<EventType>(existingEvent?.type || 'Meeting');
+  const [type, setType] = useState<EventType>(existingEvent?.type || (isMissionMode ? 'Meeting' : 'Meeting')); // default check
   const [note, setNote] = useState(existingEvent?.note || '');
+  const [problemCount, setProblemCount] = useState<number | string>(existingEvent?.problemCount || '');
+  const [formulas, setFormulas] = useState(existingEvent?.formulas || '');
   const [images, setImages] = useState<string[]>(existingEvent?.images || []);
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -58,6 +61,8 @@ export function EventModal({
       title: title.trim(),
       type,
       note: note.trim() || undefined,
+      problemCount: problemCount !== '' ? Number(problemCount) : undefined,
+      formulas: formulas.trim() || undefined,
       images: images.length > 0 ? images : undefined,
     };
 
@@ -124,69 +129,106 @@ export function EventModal({
         {/* Form */}
         <div className="form-group">
           <label className="form-label" htmlFor="event-title">
-            Title
+            {isMissionMode ? 'Topic Covered' : 'Title'}
           </label>
           <input
             id="event-title"
             className="form-input"
             type="text"
-            placeholder="Event name"
+            placeholder={isMissionMode ? "Ex: Binary Search, Graphs..." : "Event name"}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             autoFocus
           />
         </div>
 
-        <div className="form-row">
+        {isMissionMode && (
           <div className="form-group">
-            <label className="form-label" htmlFor="event-type">
-              Category
+            <label className="form-label" htmlFor="problem-count">
+              No. of Problems Covered
             </label>
-            <select
-              id="event-type"
-              className="form-input form-select"
-              value={type}
-              onChange={(e) => setType(e.target.value as EventType)}
-            >
-              {EVENT_TYPES.map((t) => (
-                <option key={t} value={t}>
-                  {t}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="form-group">
-            <label className="form-label">Images ({images.length}/4)</label>
-            <div
-              className="image-upload-zone"
-              onClick={() => fileRef.current?.click()}
-            >
-              <ImageIcon size={16} style={{ marginBottom: 2 }} />
-              <span> Add photos</span>
-            </div>
             <input
-              type="file"
-              ref={fileRef}
-              accept="image/*"
-              multiple
-              onChange={handleImageUpload}
-              style={{ display: 'none' }}
+              id="problem-count"
+              className="form-input"
+              type="number"
+              placeholder="Ex: 5"
+              value={problemCount}
+              onChange={(e) => setProblemCount(e.target.value)}
             />
           </div>
-        </div>
+        )}
+
+        {!isMissionMode ? (
+          <div className="form-row">
+            <div className="form-group">
+              <label className="form-label" htmlFor="event-type">
+                Category
+              </label>
+              <select
+                id="event-type"
+                className="form-input form-select"
+                value={type}
+                onChange={(e) => setType(e.target.value as EventType)}
+              >
+                {EVENT_TYPES.map((t) => (
+                  <option key={t} value={t}>
+                    {t}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Images ({images.length}/4)</label>
+              <div
+                className="image-upload-zone"
+                onClick={() => fileRef.current?.click()}
+              >
+                <ImageIcon size={16} style={{ marginBottom: 2 }} />
+                <span> Add photos</span>
+              </div>
+              <input
+                type="file"
+                ref={fileRef}
+                accept="image/*"
+                multiple
+                onChange={handleImageUpload}
+                style={{ display: 'none' }}
+              />
+            </div>
+          </div>
+        ) : (
+          <div className="form-group">
+             <label className="form-label">Related Screenshots ({images.length}/4)</label>
+              <div
+                className="image-upload-zone"
+                onClick={() => fileRef.current?.click()}
+              >
+                <ImageIcon size={16} style={{ marginBottom: 2 }} />
+                <span> Upload progress proof or diagrams</span>
+              </div>
+              <input
+                type="file"
+                ref={fileRef}
+                accept="image/*"
+                multiple
+                onChange={handleImageUpload}
+                style={{ display: 'none' }}
+              />
+          </div>
+        )}
 
         <div className="form-group">
-          <label className="form-label" htmlFor="event-note">
-            Note
+          <label className="form-label" htmlFor={isMissionMode ? "event-formulas" : "event-note"}>
+            {isMissionMode ? 'Formulas / Key Patterns' : 'Note'}
           </label>
           <textarea
-            id="event-note"
+            id={isMissionMode ? "event-formulas" : "event-note"}
             className="form-input form-textarea"
-            placeholder="Additional details (optional)"
-            value={note}
-            onChange={(e) => setNote(e.target.value)}
-            rows={3}
+            placeholder={isMissionMode ? "Paste formulas or logic patterns here..." : "Additional details (optional)"}
+            value={isMissionMode ? formulas : note}
+            onChange={(e) => isMissionMode ? setFormulas(e.target.value) : setNote(e.target.value)}
+            rows={isMissionMode ? 5 : 3}
           />
         </div>
 

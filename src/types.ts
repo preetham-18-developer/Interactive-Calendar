@@ -12,4 +12,6 @@ export interface CalendarEvent {
   repeatRule?: 'none' | '10_days' | '1_month' | 'custom';
   customRepeatInterval?: number; // custom days
   repeatUntilDateStr?: string; 
+  problemCount?: number;
+  formulas?: string;
 }

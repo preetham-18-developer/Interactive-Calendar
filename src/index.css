@@ -24,6 +24,14 @@
   --color-accent-light: rgba(184, 112, 74, 0.08);
   --color-accent-medium: rgba(184, 112, 74, 0.15);
 
+  /* Mission Mode Colors */
+  --color-execution: #4F46E5;
+  --color-revision: #F59E0B;
+  --color-growth: #10B981;
+  --color-execution-light: rgba(79, 70, 229, 0.1);
+  --color-revision-light: rgba(245, 158, 11, 0.1);
+  --color-growth-light: rgba(16, 185, 129, 0.1);
+
   /* Borders */
   --color-border: rgba(0, 0, 0, 0.06);
   --color-border-strong: rgba(0, 0, 0, 0.10);
@@ -91,6 +99,13 @@
   --color-accent: #D4916B;
   --color-accent-light: rgba(212, 145, 107, 0.10);
   --color-accent-medium: rgba(212, 145, 107, 0.18);
+
+  --color-execution: #818CF8;
+  --color-revision: #FBBF24;
+  --color-growth: #34D399;
+  --color-execution-light: rgba(129, 140, 248, 0.15);
+  --color-revision-light: rgba(251, 191, 36, 0.15);
+  --color-growth-light: rgba(52, 211, 153, 0.15);
 
   --color-border: rgba(255, 255, 255, 0.06);
   --color-border-strong: rgba(255, 255, 255, 0.10);
@@ -1224,4 +1239,279 @@ body {
 [data-theme="dark"] .calendar-page {
   box-shadow: 0 16px 50px rgba(0, 0, 0, 0.6);
   border-bottom: 2px solid rgba(255, 255, 255, 0.02);
+}
+
+/* --- MISSION MODE STYLES --- */
+.mission-mode-toggle-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.mission-mode-toggle-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s var(--ease-out);
+}
+
+.mission-mode-toggle-btn:hover::after {
+  transform: translateX(100%);
+}
+
+.day-cell--mission {
+  border: 1px solid transparent;
+  transition: all var(--duration-normal) var(--ease-out);
+}
+
+.day-cell--execution {
+  background: var(--color-execution-light);
+}
+.day-cell--execution:hover {
+  border-color: var(--color-execution);
+  background: rgba(79, 70, 229, 0.15) !important;
+}
+
+.day-cell--revision {
+  background: var(--color-revision-light);
+}
+.day-cell--revision:hover {
+  border-color: var(--color-revision);
+  background: rgba(245, 158, 11, 0.15) !important;
+}
+
+.day-cell--growth {
+  background: var(--color-growth-light);
+}
+.day-cell--growth:hover {
+  border-color: var(--color-growth);
+  background: rgba(16, 185, 129, 0.15) !important;
+}
+
+.day-cell__header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-2);
+}
+
+.mission-label-mini {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.7;
+}
+
+.day-cell__mission-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 0 var(--space-1);
+  gap: var(--space-2);
+}
+
+.mission-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mission-title {
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.mission-subtext {
+  font-size: 9px;
+  opacity: 0.7;
+  font-weight: 500;
+}
+
+.mission-progress-container {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: auto;
+}
+
+.mission-progress-bar {
+  flex: 1;
+  height: 4px;
+  background: var(--color-border);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.mission-progress-fill {
+  height: 100%;
+  background: currentColor;
+  border-radius: var(--radius-full);
+}
+
+.day-cell--execution .mission-progress-fill { background: var(--color-execution); color: var(--color-execution); }
+.day-cell--revision .mission-progress-fill { background: var(--color-revision); color: var(--color-revision); }
+.day-cell--growth .mission-progress-fill { background: var(--color-growth); color: var(--color-growth); }
+
+.mission-status-icon {
+  font-size: 10px;
+  font-weight: 800;
+  opacity: 0.8;
+}
+
+.mission-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: auto;
+}
+
+.mission-tag {
+  font-size: 8px;
+  font-weight: 600;
+  padding: 1px 4px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"] .mission-tag {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Specific mode transitions */
+.day-cell {
+  will-change: transform, background-color, border-color;
+}
+
+.days-grid {
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+
+/* Scale effect for calendar container during mode switch if desired */
+.calendar-panel--mission-transition {
+  animation: calendar-pulse 0.6s var(--ease-out);
+}
+
+/* --- LOGO --- */
+.app-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-right: var(--space-4);
+  padding-right: var(--space-4);
+  border-right: 1px solid var(--color-border);
+}
+
+.app-logo__text {
+  font-weight: 700;
+  font-size: var(--font-size-lg);
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-text-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@keyframes calendar-pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.005); }
+  100% { transform: scale(1); }
+}
+
+/* --- MISSION MODE VISIBILITY FIXES --- */
+.days-grid--mission {
+  grid-template-columns: repeat(7, 1fr) !important;
+  gap: 8px !important;
+  padding: var(--space-2) var(--space-4);
+  padding-bottom: var(--space-8);
+  overflow-y: scroll !important;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.4) transparent;
+}
+
+.days-grid--mission::-webkit-scrollbar {
+  width: 8px;
+  display: block !important;
+}
+
+.days-grid--mission::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: var(--radius-full);
+}
+
+.days-grid--mission::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: var(--radius-full);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  transition: background 0.2s ease;
+}
+
+.days-grid--mission::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .days-grid--mission::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .days-grid--mission::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+[data-theme="dark"] .days-grid--mission::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.day-cell--mission {
+  min-height: 72px !important;
+  padding: var(--space-2) var(--space-2) !important;
+}
+
+.day-cell--mission .day-cell__header {
+  margin-bottom: 2px;
+}
+
+.day-cell--mission .mission-title {
+  font-size: 11px;
+}
+
+.day-cell--mission .mission-subtext {
+  font-size: 10px;
+}
+
+.day-cell--mission .mission-progress-container {
+  margin-top: 4px;
+}
+
+.day-cell--mission .mission-tags {
+  gap: 2px;
+  margin-top: 4px;
+}
+
+.day-cell--mission .mission-tag {
+  padding: 1px 4px;
+  font-size: 9px;
+}
+
+@media (max-height: 800px) {
+  .day-cell--mission {
+    min-height: 52px !important;
+  }
+  .mission-main {
+    gap: 0;
+  }
+}
+
+.calendar-page-inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }

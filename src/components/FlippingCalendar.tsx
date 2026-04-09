@@ -8,6 +8,7 @@ interface FlippingCalendarProps {
   currentDate: Date;
   events: CalendarEvent[];
   onDayClick: (dateStr: string) => void;
+  isMissionMode: boolean;
 }
 
 interface PageData {
@@ -62,7 +63,7 @@ function computePagesToFlip(oldDate: Date, newDate: Date): { direction: 'forward
   }
 }
 
-export function FlippingCalendar({ currentDate, events, onDayClick }: FlippingCalendarProps) {
+export function FlippingCalendar({ currentDate, events, onDayClick, isMissionMode }: FlippingCalendarProps) {
   const [targetPage, setTargetPage] = useState<PageData>({ 
     year: currentDate.getFullYear(), 
     month: currentDate.getMonth(), 
@@ -109,13 +110,14 @@ export function FlippingCalendar({ currentDate, events, onDayClick }: FlippingCa
     <div className="flipping-calendar-container">
       {/* 1. Underlying target page (always visible, but might be covered by animating pages) */}
       <div className="calendar-page static-target">
-         <StaticPage 
-           year={targetPage.year} 
-           month={targetPage.month} 
-           eventsMap={getEventsForMonth(targetPage.year, targetPage.month)} 
-           onDayClick={onDayClick} 
-           isTarget={true}
-         />
+          <StaticPage 
+            year={targetPage.year} 
+            month={targetPage.month} 
+            eventsMap={getEventsForMonth(targetPage.year, targetPage.month)} 
+            onDayClick={onDayClick} 
+            isTarget={true}
+            isMissionMode={isMissionMode}
+          />
       </div>
 
       {/* 2. Animating pages over it */}
@@ -158,6 +160,7 @@ export function FlippingCalendar({ currentDate, events, onDayClick }: FlippingCa
                   month={page.month} 
                   eventsMap={getEventsForMonth(page.year, page.month)} 
                   onDayClick={onDayClick} 
+                  isMissionMode={isMissionMode}
                 />
               </motion.div>
             );
@@ -168,7 +171,7 @@ export function FlippingCalendar({ currentDate, events, onDayClick }: FlippingCa
 }
 
 // A simple wrapper to memoize the render of a specific month grid
-const StaticPage = React.memo(function StaticPage({ year, month, eventsMap, onDayClick, isTarget = false }: { year: number, month: number, eventsMap: Map<number, CalendarEvent[]>, onDayClick: (s:string)=>void, isTarget?: boolean }) {
+const StaticPage = React.memo(function StaticPage({ year, month, eventsMap, onDayClick, isTarget = false, isMissionMode }: { year: number, month: number, eventsMap: Map<number, CalendarEvent[]>, onDayClick: (s:string)=>void, isTarget?: boolean, isMissionMode: boolean }) {
   const daysInMonth = getDaysInMonth(year, month);
   const firstDay = getFirstDayOfMonth(year, month);
   
@@ -181,6 +184,7 @@ const StaticPage = React.memo(function StaticPage({ year, month, eventsMap, onDa
           firstDay={firstDay}
           eventsMap={eventsMap}
           onDayClick={onDayClick}
+          isMissionMode={isMissionMode}
        />
     </div>
   )

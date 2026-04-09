@@ -25,6 +25,7 @@ function App() {
   const [direction, setDirection] = useState(0); // -1 for prev, 1 for next
   const [currentUser, setCurrentUser] = useState<string | null>(null);
   const [showAuth, setShowAuth] = useState(false);
+  const [isMissionMode, setIsMissionMode] = useState(false);
 
   // Refs for tracking direction
 
@@ -251,7 +252,11 @@ function App() {
           />
 
           {/* RIGHT — Calendar Panel */}
-          <div className="calendar-panel">
+          <motion.div 
+            className="calendar-panel"
+            animate={{ scale: isMissionMode ? [1, 1.005, 1] : 1 }}
+            transition={{ duration: 0.4 }}
+          >
             {/* Reminder */}
             <AnimatePresence>
               {reminderEvent && (
@@ -273,6 +278,8 @@ function App() {
               onToggleTheme={toggleTheme}
               onOpenRadar={() => setIsRadarOpen(true)}
               onLogout={handleLogout}
+              isMissionMode={isMissionMode}
+              onMissionModeChange={setIsMissionMode}
             />
 
             {/* Header Area Status Cards */}
@@ -314,6 +321,7 @@ function App() {
                       currentDate={currentDate}
                       events={events}
                       onDayClick={handleDayClick}
+                      isMissionMode={isMissionMode}
                     />
                   </motion.div>
                 ) : (
@@ -338,7 +346,7 @@ function App() {
                 )}
               </AnimatePresence>
             </div>
-          </div>
+          </motion.div>
 
 
           {/* EVENT MODAL */}
@@ -347,6 +355,7 @@ function App() {
               <EventModal
                 dateStr={selectedDate}
                 existingEvents={events}
+                isMissionMode={isMissionMode}
                 onClose={() => {
                   setModalOpen(false);
                   setSelectedDate(null);
