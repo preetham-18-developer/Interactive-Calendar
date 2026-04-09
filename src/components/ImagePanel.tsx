@@ -7,9 +7,10 @@ interface ImagePanelProps {
   monthLabel: string;
   year: number;
   currentDate: Date;
+  season?: string;
 }
 
-export const ImagePanel = React.memo(function ImagePanel({ imageSrc, monthLabel, year, currentDate }: ImagePanelProps) {
+export const ImagePanel = React.memo(function ImagePanel({ imageSrc, monthLabel, year, currentDate, season }: ImagePanelProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [displaySrc, setDisplaySrc] = useState(imageSrc);
   const [ambientColor, setAmbientColor] = useState('rgba(200, 180, 160, 0.1)');
@@ -150,7 +151,7 @@ export const ImagePanel = React.memo(function ImagePanel({ imageSrc, monthLabel,
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.5 }}
         >
-          {dayOfWeek} · {year}
+          {dayOfWeek} · {year} {season && `· ${season}`}
         </motion.div>
       </div>
 

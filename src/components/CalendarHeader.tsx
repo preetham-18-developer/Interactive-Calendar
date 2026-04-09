@@ -45,40 +45,44 @@ export const CalendarHeader = React.memo(function CalendarHeader({
 
   return (
     <div className="calendar-header">
-      {/* Left Toolbar & Title */}
+      {/* Top Row: Logo and Toolbar */}
       <div className="calendar-header__left">
         <div className="app-logo">
-          <Activity size={20} className="text-red-600 animate-pulse" />
-          <span className="app-logo__text">TimeForge</span>
+          <Activity size={18} className="text-red-600 animate-pulse" />
+          <span className="app-logo__text hidden sm:inline">TimeForge</span>
         </div>
-        <div className="app-toolbar mr-4 pr-3 border-r border-[var(--color-border)]">
-          <button
-            className="icon-btn"
-            onClick={onOpenRadar}
-            title="Radar Scanner"
-          >
-            <Radio size={18} />
-          </button>
-          <button
-            className="icon-btn"
-            onClick={onToggleTheme}
-            title={isDark ? "Switch to light mode" : "Switch to dark mode"}
-          >
-            {isDark ? <Sun size={18} /> : <Moon size={18} />}
-          </button>
-          <button
-            className="icon-btn text-zinc-400 hover:text-red-500 transition-colors"
-            onClick={onLogout}
-            title="Logout"
-          >
-            <LogOut size={16} />
-          </button>
-        </div>
+        
+        <div className="flex items-center gap-1 sm:gap-2">
+          {/* Navigation for mobile (next to title usually, but putting here for row 1 if needed) */}
+          <div className="flex items-center gap-1 mr-2 sm:hidden">
+            <button className="icon-btn" onClick={onPrev} id="prev-month-btn-mobile">
+              <ChevronLeft size={18} />
+            </button>
+            <button className="icon-btn" onClick={onNext} id="next-month-btn-mobile">
+              <ChevronRight size={18} />
+            </button>
+          </div>
 
+          <div className="app-toolbar pr-2 border-r border-[var(--color-border)]">
+            <button className="icon-btn" onClick={onOpenRadar} title="Radar Scanner">
+              <Radio size={16} />
+            </button>
+            <button className="icon-btn" onClick={onToggleTheme} title="Theme">
+              {isDark ? <Sun size={16} /> : <Moon size={16} />}
+            </button>
+            <button className="icon-btn text-zinc-400" onClick={onLogout} title="Logout">
+              <LogOut size={14} />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Middle Row: Title (Month Year) */}
+      <div className="calendar-header__title-container flex justify-between items-center w-full">
         <div className="calendar-header__title">
-          <h1 className="calendar-header__month">{monthLabel}</h1>
+          <h1 className="calendar-header__month text-xl sm:text-2xl">{monthLabel}</h1>
           <select 
-            className="calendar-header__year-select"
+            className="calendar-header__year-select text-sm sm:text-lg"
             value={year}
             onChange={(e) => onYearChange(parseInt(e.target.value))}
           >
@@ -87,73 +91,53 @@ export const CalendarHeader = React.memo(function CalendarHeader({
             ))}
           </select>
         </div>
-      </div>
-
-      {/* Controls */}
-      <div className="calendar-header__controls">
-        {/* View selector */}
-        <div className="view-selector">
-          <button
-            className={`view-selector__btn ${view === 'month' ? 'view-selector__btn--active' : ''}`}
-            onClick={() => onViewChange('month')}
-            id="view-month-btn"
-          >
-            Month
-          </button>
-          <button
-            className={`view-selector__btn ${view === 'list' ? 'view-selector__btn--active' : ''}`}
-            onClick={() => onViewChange('list')}
-            id="view-list-btn"
-          >
-            List
-          </button>
-        </div>
-
-        {/* Mission Mode toggle */}
-        <div className="view-selector">
-          <button
-            className={`view-selector__btn ${!isMissionMode ? 'view-selector__btn--active' : ''}`}
-            onClick={() => onMissionModeChange(false)}
-            id="normal-mode-btn"
-          >
-            Normal
-          </button>
-          <button
-            className={`view-selector__btn ${isMissionMode ? 'view-selector__btn--active' : ''} mission-mode-toggle-btn`}
-            onClick={() => onMissionModeChange(true)}
-            id="mission-mode-btn"
-          >
-             🎯 Mission
-          </button>
-        </div>
-
-        {/* Today button */}
-        <button
-          className="icon-btn-text"
-          onClick={onToday}
-          title="Go to today"
-          id="today-btn"
-        >
-          Today
-        </button>
-
-        {/* Navigation */}
-        <div className="flex items-center gap-1">
-          <button
-            className="icon-btn"
-            onClick={onPrev}
-            title="Previous month"
-            id="prev-month-btn"
-          >
+        
+        {/* Navigation for desktop (visible on sm+) */}
+        <div className="hidden sm:flex items-center gap-1">
+          <button className="icon-btn" onClick={onPrev} id="prev-month-btn">
             <ChevronLeft size={20} />
           </button>
-          <button
-            className="icon-btn"
-            onClick={onNext}
-            title="Next month"
-            id="next-month-btn"
-          >
+          <button className="icon-btn" onClick={onNext} id="next-month-btn">
             <ChevronRight size={20} />
+          </button>
+        </div>
+      </div>
+
+      {/* Bottom Row: View and Mission selectors */}
+      <div className="calendar-header__controls">
+        <div className="flex flex-wrap items-center gap-2 w-full justify-between">
+          <div className="view-selector">
+            <button
+              className={`view-selector__btn ${view === 'month' ? 'view-selector__btn--active' : ''}`}
+              onClick={() => onViewChange('month')}
+            >
+              Month
+            </button>
+            <button
+              className={`view-selector__btn ${view === 'list' ? 'view-selector__btn--active' : ''}`}
+              onClick={() => onViewChange('list')}
+            >
+              List
+            </button>
+          </div>
+
+          <div className="view-selector">
+            <button
+              className={`view-selector__btn ${!isMissionMode ? 'view-selector__btn--active' : ''}`}
+              onClick={() => onMissionModeChange(false)}
+            >
+              Basic
+            </button>
+            <button
+              className={`view-selector__btn ${isMissionMode ? 'view-selector__btn--active' : ''} mission-mode-toggle-btn`}
+              onClick={() => onMissionModeChange(true)}
+            >
+              🎯 Mission
+            </button>
+          </div>
+
+          <button className="icon-btn-text" onClick={onToday} id="today-btn">
+            Today
           </button>
         </div>
       </div>

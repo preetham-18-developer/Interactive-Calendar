@@ -211,7 +211,9 @@ const DayCell = React.memo(function DayCell({
       <div className="day-cell__header">
         <span className="day-cell__number">{day}</span>
         {isMissionMode && missionInfo?.label && (
-           <span className="mission-label-mini">{missionInfo.label.split(' ')[0]}</span>
+           <span className="mission-label-mini" style={{ color: missionInfo.color }}>
+             {missionInfo.label.split(' ')[0]}
+           </span>
         )}
       </div>
 

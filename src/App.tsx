@@ -249,6 +249,7 @@ function App() {
             monthLabel={monthLabel}
             year={year}
             currentDate={currentDate}
+            season={seasonName}
           />
 
           {/* RIGHT — Calendar Panel */}
@@ -301,7 +302,7 @@ function App() {
             </div>
 
             {/* Calendar Content with Transition */}
-            <div style={{ flex: 1, overflow: 'hidden', position: 'relative' }}>
+            <div style={{ flex: 1, position: 'relative' }}>
               <AnimatePresence mode="popLayout" initial={false} custom={direction}>
                 {view === 'month' ? (
                   <motion.div
