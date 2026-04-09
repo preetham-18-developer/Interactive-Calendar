@@ -1,6 +1,5 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronUp, ChevronDown } from 'lucide-react';
 import type { CalendarEvent } from '../types';
 import { isToday } from '../utils/dateUtils';
 
@@ -33,8 +32,6 @@ export const CalendarGrid = React.memo(function CalendarGrid({
   onDayClick,
   isMissionMode,
 }: CalendarGridProps) {
-  const gridRef = useRef<HTMLDivElement>(null);
-
   // Build day cells including leading empty cells
   const cells = useMemo(() => {
     const result: Array<{
@@ -91,51 +88,28 @@ export const CalendarGrid = React.memo(function CalendarGrid({
       </div>
 
       {/* Days grid */}
-      <div className="relative flex-1 overflow-hidden flex flex-col">
-        <motion.div
-          ref={gridRef}
-          className={`days-grid ${isMissionMode ? 'days-grid--mission' : ''}`}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          key={`${year}-${month}`}
-        >
-          {cells.map((cell, i) => (
-            <DayCell
-              key={`${year}-${month}-${i}`}
-              day={cell.day}
-              isEmpty={cell.isEmpty}
-              isTodayCell={cell.isToday}
-              isSunday={cell.isSunday}
-              dateStr={cell.dateStr}
-              events={cell.events}
-              onClick={onDayClick}
-              index={i}
-              isMissionMode={isMissionMode}
-            />
-          ))}
-        </motion.div>
-
-        {/* Manual Scroll Buttons for Mobile Mission Mode */}
-        {isMissionMode && (
-          <div className="mission-scroll-controls sm:hidden">
-            <button 
-              className="mission-scroll-btn" 
-              onClick={() => gridRef.current?.scrollBy({ top: -150, behavior: 'smooth' })}
-              aria-label="Scroll Up"
-            >
-              <ChevronUp size={16} />
-            </button>
-            <button 
-              className="mission-scroll-btn" 
-              onClick={() => gridRef.current?.scrollBy({ top: 150, behavior: 'smooth' })}
-              aria-label="Scroll Down"
-            >
-              <ChevronDown size={16} />
-            </button>
-          </div>
-        )}
-      </div>
+      <motion.div
+        className={`days-grid ${isMissionMode ? 'days-grid--mission' : ''}`}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        key={`${year}-${month}`}
+      >
+        {cells.map((cell, i) => (
+          <DayCell
+            key={`${year}-${month}-${i}`}
+            day={cell.day}
+            isEmpty={cell.isEmpty}
+            isTodayCell={cell.isToday}
+            isSunday={cell.isSunday}
+            dateStr={cell.dateStr}
+            events={cell.events}
+            onClick={onDayClick}
+            index={i}
+            isMissionMode={isMissionMode}
+          />
+        ))}
+      </motion.div>
     </>
   );
 });
